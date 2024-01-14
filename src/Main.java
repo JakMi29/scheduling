@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         String filePath = "C:\\Users\\jakub\\OneDrive\\Pulpit\\java\\szeregowanie\\src\\dane.txt";
-        Mine mine = new MineRR(2, 1);
+        Mine mine = new MineRR(2,1);
         try {
             Path path = Paths.get(filePath);
             List<String> lines = Files.readAllLines(path);

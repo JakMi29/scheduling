@@ -11,7 +11,7 @@ public class Mine {
 
     public Mine(int numberOfRobots) {
         this.numberOfRobots = numberOfRobots;
-        this.wheelbarrows = new ArrayList<>();
+        this.wheelbarrows = new LinkedList<>();
         this.waitingWheelbarrows = new LinkedList<>();
     }
 
@@ -31,13 +31,13 @@ public class Mine {
 
     private void update(List<Wheelbarrow> wheelbarrows) {
         receivedWheelbarrow(wheelbarrows);
-        updateQueue();
         work();
+        updateQueue();
     }
 
     private void update() {
-        updateQueue();
         work();
+        updateQueue();
     }
 
     protected void work() {
@@ -57,7 +57,7 @@ public class Mine {
 
     protected void updateQueue() {
         wheelbarrows = wheelbarrows.stream()
-                .filter(t -> t.getUnloadingTime() != t.getExpectedTime())
+                .filter(t -> t.getUnloadingTime() < t.getExpectedTime())
                 .collect(Collectors.toCollection(LinkedList::new));
 
         while (!waitingWheelbarrows.isEmpty() && wheelbarrows.size() < numberOfRobots) {
@@ -69,7 +69,10 @@ public class Mine {
         list.forEach(
                 (t) -> {
                     System.out.println("      wheelbarrow arrived " + t);
-                    waitingWheelbarrows.add(t);
+                    if (this.wheelbarrows.size() < this.numberOfRobots)
+                        wheelbarrows.add(t);
+                    else
+                        waitingWheelbarrows.add(t);
                 }
         );
     }

@@ -16,7 +16,7 @@ public class MineRR extends Mine {
                 .collect(Collectors.toCollection(LinkedList::new));
         wheelbarrows = wheelbarrows.stream().filter(
                         t -> {
-                            boolean bool = t.getTimeQuantum() != timeQuantum;
+                            boolean bool = t.getTimeQuantum() < timeQuantum;
                             if (!bool) {
                                 t.setTimeQuantum(0);
                                 waitingWheelbarrows.add(t);
