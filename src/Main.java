@@ -7,12 +7,28 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        String filePath = "C:\\Users\\jakub\\OneDrive\\Pulpit\\java\\szeregowanie\\src\\dane.txt";
-        Mine mine = new MineRR(2,1);
+        int numberOfRobots=Integer.parseInt(args[0]);
+        int timeQuantum=Integer.parseInt(args[1]);
+        String filePath = args[2];
+        int strategy=Integer.parseInt(args[3]);
+
         try {
             Path path = Paths.get(filePath);
             List<String> lines = Files.readAllLines(path);
-            mine.start(lines);
+            switch (strategy) {
+                case 1 -> {
+                    MineFCFS mineFCFS = new MineFCFS(numberOfRobots);
+                    mineFCFS.start(lines);
+                }
+                case 2 -> {
+                    MineRR mineRR = new MineRR(numberOfRobots, timeQuantum);
+                    mineRR.start(lines);
+                }
+                case 3 -> {
+                    MineSJV mineSJV = new MineSJV(numberOfRobots);
+                    mineSJV.start(lines);
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

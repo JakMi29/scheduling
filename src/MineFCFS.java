@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-public class Mine {
-    protected final Queue<Wheelbarrow> waitingWheelbarrows;
-    protected int numberOfRobots;
-    protected List<Wheelbarrow> wheelbarrows;
+public class MineFCFS {
+    private final Queue<Wheelbarrow> waitingWheelbarrows;
+    private final int numberOfRobots;
+    private List<Wheelbarrow> wheelbarrows;
 
-    public Mine(int numberOfRobots) {
+    public MineFCFS(int numberOfRobots) {
         this.numberOfRobots = numberOfRobots;
         this.wheelbarrows = new LinkedList<>();
         this.waitingWheelbarrows = new LinkedList<>();
@@ -17,16 +17,18 @@ public class Mine {
 
     public void start(List<String> lines) {
         int index = 0;
+        int moment = Integer.parseInt(lines.get(0).split(" ")[0]);
         do {
-            System.out.println("Moment " + index);
+            System.out.println("Moment " + moment);
             if (index < lines.size()) {
                 update(readLine(lines.get(index)));
             } else {
                 update();
             }
             index++;
+            moment++;
         }
-        while (!wheelbarrows.isEmpty());
+        while (index <= lines.size() || !wheelbarrows.isEmpty());
     }
 
     private void update(List<Wheelbarrow> wheelbarrows) {
@@ -40,10 +42,10 @@ public class Mine {
         updateQueue();
     }
 
-    protected void work() {
+    private void work() {
         wheelbarrows.forEach(
                 t -> {
-                    System.out.print("      [" + t.getRockName() + " " + t.getQuantity() + "]");
+                    System.out.print("      [" + t.getRockName() + " " + (t.getExpectedTime() - t.getUnloadingTime()) + "]");
                     t.update();
                 }
         );
@@ -55,7 +57,7 @@ public class Mine {
 
     }
 
-    protected void updateQueue() {
+    private void updateQueue() {
         wheelbarrows = wheelbarrows.stream()
                 .filter(t -> t.getUnloadingTime() < t.getExpectedTime())
                 .collect(Collectors.toCollection(LinkedList::new));
@@ -82,14 +84,15 @@ public class Mine {
         int objectQuantity = parts.length / 4;
         List<Wheelbarrow> wheelbarrows = new ArrayList<>();
         for (int i = 0; i < objectQuantity; i++) {
-            wheelbarrows.add(
-                    new Wheelbarrow(
-                            Integer.parseInt(parts[i * 4 + 1]),
-                            parts[i * 4 + 2],
-                            Integer.parseInt(parts[i * 4 + 3]),
-                            Integer.parseInt(parts[i * 4 + 4])
-                    )
-            );
+            try {
+                Wheelbarrow barrow = new Wheelbarrow(
+                        Integer.parseInt(parts[i * 4 + 1]),
+                        parts[i * 4 + 2],
+                        Integer.parseInt(parts[i * 4 + 3]),
+                        Integer.parseInt(parts[i * 4 + 4]));
+                wheelbarrows.add(barrow);
+            } catch (Exception ignored) {
+            }
         }
         return wheelbarrows;
     }

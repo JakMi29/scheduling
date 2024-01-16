@@ -15,43 +15,30 @@ public class Wheelbarrow {
         this.unloadingTime = 0;
         this.expectedTime = quantity * weight;
     }
-
     public int getTimeQuantum() {
         return timeQuantum;
     }
-
     public void setTimeQuantum(int timeQuantum) {
         this.timeQuantum = timeQuantum;
     }
-
     public void update() {
         unloadingTime++;
     }
-
     public void updateTimeQuantum() {
         timeQuantum++;
     }
-
-
     public int getExpectedTime() {
         return expectedTime;
     }
-
-
     public String getRockName() {
         return rockName;
     }
-
-
     public int getQuantity() {
         return quantity;
     }
-
-
     public int getUnloadingTime() {
         return unloadingTime;
     }
-
     @Override
     public String toString() {
         return "<" +
